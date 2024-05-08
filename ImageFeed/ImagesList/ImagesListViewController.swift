@@ -27,6 +27,7 @@ extension ImagesListViewController: UITableViewDataSource {
         return imageListCell
     }
 }
+
 extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) { }
 }
