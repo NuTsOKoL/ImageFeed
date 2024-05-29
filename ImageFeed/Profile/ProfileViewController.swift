@@ -2,7 +2,7 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     private var label: UILabel?
-    private var image: UIImage?
+//    private var image: UIImage?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,38 +15,38 @@ final class ProfileViewController: UIViewController {
         imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant:  20).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        self.image = profileImage
+//        self.image = profileImage
         
-        let labelName = UILabel()
-        labelName.text = "Екатерина Новикова"
-        labelName.textColor = .white
-        labelName.font = UIFont.boldSystemFont(ofSize: 23)
+        let userName = UILabel()
+        userName.text = "Екатерина Новикова"
+        userName.textColor = .white
+        userName.font = UIFont.boldSystemFont(ofSize: 23)
       
-        labelName.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(labelName)
-        labelName.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
-        labelName.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20).isActive = true
-        self.label = labelName
+        userName.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(userName)
+        userName.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
+        userName.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20).isActive = true
+        self.label = userName
         
-        let labelEmail = UILabel()
-        labelEmail.text = "@ekaterina_nov"
-        labelEmail.textColor = .gray
-        labelEmail.font = UIFont.systemFont(ofSize: 13)
-        labelEmail.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(labelEmail)
-        labelEmail.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
-        labelEmail.topAnchor.constraint(equalTo: labelName.bottomAnchor, constant: 8).isActive = true
-        self.label = labelEmail
+        let nickname = UILabel()
+        nickname.text = "@ekaterina_nov"
+        nickname.textColor = .gray
+        nickname.font = UIFont.systemFont(ofSize: 13)
+        nickname.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(nickname)
+        nickname.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
+        nickname.topAnchor.constraint(equalTo: userName.bottomAnchor, constant: 8).isActive = true
+        self.label = nickname
         
-        let labelStatus = UILabel()
-        labelStatus.text = "Hello world!"
-        labelStatus.textColor = .white
-        labelStatus.font = UIFont.systemFont(ofSize: 13)
-        labelStatus.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(labelStatus)
-        labelStatus.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
-        labelStatus.topAnchor.constraint(equalTo: labelEmail.bottomAnchor, constant: 8).isActive = true
-        self.label = labelStatus
+        let profileDescription = UILabel()
+        profileDescription.text = "Hello world!"
+        profileDescription.textColor = .white
+        profileDescription.font = UIFont.systemFont(ofSize: 13)
+        profileDescription.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(profileDescription)
+        profileDescription.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
+        profileDescription.topAnchor.constraint(equalTo: nickname.bottomAnchor, constant: 8).isActive = true
+        self.label = profileDescription
         
         let logoutButton = UIButton.systemButton(
             with: UIImage(systemName: "ipad.and.arrow.forward")!,
@@ -61,10 +61,9 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapButton() {
-       
-        //MARK: как сделать удаляющую картинку?
-        image = UIImage(systemName: "person.crop.circle.fill")
-       
+        
+        //MARK: как сделать смену картинки?..(надо будет подумать)
+//        self.image = UIImage(systemName: "person.crop.circle.fill")
         
         for view in view.subviews {
             if view is UILabel {

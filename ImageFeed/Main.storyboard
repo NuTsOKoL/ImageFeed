@@ -109,14 +109,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zBi-tf-QW4">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zBi-tf-QW4">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="ZBo-oy-VFV">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="352"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="ZBo-oy-VFV">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                     </imageView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="ZBo-oy-VFV" firstAttribute="top" secondItem="zBi-tf-QW4" secondAttribute="top" id="JwB-9Q-q2N"/>
+                                    <constraint firstAttribute="bottom" secondItem="ZBo-oy-VFV" secondAttribute="bottom" id="Qxd-cq-jEP"/>
+                                    <constraint firstAttribute="trailing" secondItem="ZBo-oy-VFV" secondAttribute="trailing" id="S6u-wO-6OB"/>
+                                    <constraint firstItem="ZBo-oy-VFV" firstAttribute="leading" secondItem="zBi-tf-QW4" secondAttribute="leading" id="u7Q-1x-HCa"/>
+                                </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="dhZ-tU-XbI"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="pvA-CY-WN5"/>
                                 <connections>
@@ -151,13 +156,13 @@
                         <viewLayoutGuide key="safeArea" id="7RM-LG-zu7"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstItem="7RM-LG-zu7" firstAttribute="trailing" secondItem="zBi-tf-QW4" secondAttribute="trailing" id="5py-vf-ayN"/>
+                            <constraint firstItem="zBi-tf-QW4" firstAttribute="trailing" secondItem="7RM-LG-zu7" secondAttribute="trailing" id="5py-vf-ayN"/>
                             <constraint firstItem="7RM-LG-zu7" firstAttribute="bottom" secondItem="DNW-BD-Xzt" secondAttribute="bottom" constant="16" id="7bg-UQ-z3d"/>
                             <constraint firstItem="zBi-tf-QW4" firstAttribute="top" secondItem="h2i-mx-6pB" secondAttribute="top" id="DWp-DS-GRu"/>
                             <constraint firstItem="3hQ-OU-PIY" firstAttribute="top" secondItem="7RM-LG-zu7" secondAttribute="top" constant="8" id="Diy-ET-gqq"/>
                             <constraint firstItem="3hQ-OU-PIY" firstAttribute="leading" secondItem="7RM-LG-zu7" secondAttribute="leading" constant="8" id="J8B-K2-ZAg"/>
                             <constraint firstItem="DNW-BD-Xzt" firstAttribute="centerX" secondItem="h2i-mx-6pB" secondAttribute="centerX" id="cY5-AM-13N"/>
-                            <constraint firstItem="zBi-tf-QW4" firstAttribute="leading" secondItem="7RM-LG-zu7" secondAttribute="leading" id="uXU-gj-9iz"/>
+                            <constraint firstItem="7RM-LG-zu7" firstAttribute="leading" secondItem="zBi-tf-QW4" secondAttribute="leading" id="uXU-gj-9iz"/>
                             <constraint firstAttribute="bottom" secondItem="zBi-tf-QW4" secondAttribute="bottom" id="v8q-wM-nci"/>
                         </constraints>
                     </view>
@@ -169,7 +174,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Evd-6d-XyG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1804" y="-218"/>
+            <point key="canvasLocation" x="1802.8985507246377" y="-218.30357142857142"/>
         </scene>
         <!--Profile-->
         <scene sceneID="oET-z6-ZMl">
