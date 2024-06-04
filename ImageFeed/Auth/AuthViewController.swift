@@ -5,7 +5,7 @@ final class AuthViewController: UIViewController {
         button.setTitle("Войти", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .white
-        button.layer.cornerRadius = 5
+        button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
