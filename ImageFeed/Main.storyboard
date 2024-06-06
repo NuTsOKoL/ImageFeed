@@ -223,17 +223,49 @@
                     <view key="view" contentMode="scaleToFill" id="DqE-e3-Z1U">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HgN-Ka-5R6">
+                                <rect key="frame" x="16" y="724" width="382" height="48"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="fxy-3T-CnW"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="tintColor" name="YP Black"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Войти">
+                                    <color key="titleColor" name="YP Black"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="16"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="auth_screen_logo" translatesAutoresizingMaskIntoConstraints="NO" id="18a-0i-q1c">
+                                <rect key="frame" x="87" y="384" width="240" height="128"/>
+                            </imageView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="2Z8-74-p8J"/>
                         <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="18a-0i-q1c" firstAttribute="centerX" secondItem="2Z8-74-p8J" secondAttribute="centerX" id="6NN-O3-bFP"/>
+                            <constraint firstItem="HgN-Ka-5R6" firstAttribute="leading" secondItem="2Z8-74-p8J" secondAttribute="leading" constant="16" id="7b5-5k-FQ8"/>
+                            <constraint firstAttribute="bottom" secondItem="HgN-Ka-5R6" secondAttribute="bottom" constant="124" id="AD1-GE-IFT"/>
+                            <constraint firstItem="2Z8-74-p8J" firstAttribute="trailing" secondItem="HgN-Ka-5R6" secondAttribute="trailing" constant="16" id="ijb-tK-7u7"/>
+                            <constraint firstItem="18a-0i-q1c" firstAttribute="centerY" secondItem="2Z8-74-p8J" secondAttribute="centerY" id="nf6-Nq-jdr"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fxy-d1-mbn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1803" y="465"/>
+            <point key="canvasLocation" x="1802.8985507246377" y="464.73214285714283"/>
         </scene>
     </scenes>
     <resources>
         <image name="0" width="1600" height="1059"/>
+        <image name="auth_screen_logo" width="60" height="60"/>
         <image name="like_button_on" width="42" height="42"/>
         <image name="nav_back_button_white" width="24" height="24"/>
         <image name="share_button" width="51" height="51"/>
