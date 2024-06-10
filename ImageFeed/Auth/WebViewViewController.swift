@@ -13,6 +13,9 @@ final class WebViewViewController: UIViewController {
     
     weak var delegate: WebViewViewControllerDelegate?
     
+    enum WebViewConstants {
+        static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
+    }
     @IBAction private func didTapBackButton(_ sender: Any?) {
         delegate?.webViewViewControllerDidCancel(self)
     }
@@ -50,6 +53,7 @@ final class WebViewViewController: UIViewController {
     }
     private func loadAuthView() {
         guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
+            print("Ошибка формирования URLComponents")
             return
         }
         urlComponents.queryItems = [
@@ -59,14 +63,13 @@ final class WebViewViewController: UIViewController {
             URLQueryItem(name: "scope", value: Constants.accessScope)
         ]
         guard let url = urlComponents.url else {
+            print("Ошибка получения urlComponents.url")
             return
         }
         let request = URLRequest(url: url)
         webView.load(request)
     }
-    enum WebViewConstants {
-        static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
-    }
+  
 }
 extension WebViewViewController: WKNavigationDelegate {
     func webView(

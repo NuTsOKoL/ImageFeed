@@ -23,6 +23,8 @@
 		04FC0E6B2C16F07B00B3DF83 /* URLSession+data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FC0E6A2C16F07B00B3DF83 /* URLSession+data.swift */; };
 		04FC0E702C16F27200B3DF83 /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FC0E6C2C16F27200B3DF83 /* OAuth2Service.swift */; };
 		04FC0E712C16F27200B3DF83 /* OAuth2TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FC0E6D2C16F27200B3DF83 /* OAuth2TokenStorage.swift */; };
+		04FC0E742C1719EB00B3DF83 /* OAuth2TokenStorageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FC0E732C1719EB00B3DF83 /* OAuth2TokenStorageProtocol.swift */; };
+		04FC0E782C171F9100B3DF83 /* OAuthTokenResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FC0E752C171F9100B3DF83 /* OAuthTokenResponseBody.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +45,8 @@
 		04FC0E6A2C16F07B00B3DF83 /* URLSession+data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+data.swift"; sourceTree = "<group>"; };
 		04FC0E6C2C16F27200B3DF83 /* OAuth2Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
 		04FC0E6D2C16F27200B3DF83 /* OAuth2TokenStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2TokenStorage.swift; sourceTree = "<group>"; };
+		04FC0E732C1719EB00B3DF83 /* OAuth2TokenStorageProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2TokenStorageProtocol.swift; sourceTree = "<group>"; };
+		04FC0E752C171F9100B3DF83 /* OAuthTokenResponseBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthTokenResponseBody.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,13 +81,10 @@
 			children = (
 				041D52222BE36BF60061F141 /* AppDelegate.swift */,
 				041D52242BE36BF60061F141 /* SceneDelegate.swift */,
-				04FC0E5D2C0974D400B3DF83 /* Constants.swift */,
 				04FC0E632C0EBE7E00B3DF83 /* Auth */,
 				041D527B2BE9FDF00061F141 /* ImagesList */,
 				048336AE2BFBC699008BB424 /* Profile */,
 				048336B12BFD91BA008BB424 /* SingleImageView */,
-				04FC0E6F2C16F27200B3DF83 /* ServiceAccessLayer */,
-				04FC0E722C16F65C00B3DF83 /* Services */,
 				048336B22BFD998F008BB424 /* Main.storyboard */,
 				041D522B2BE36BF90061F141 /* Assets.xcassets */,
 				041D522D2BE36BF90061F141 /* LaunchScreen.storyboard */,
@@ -120,6 +121,8 @@
 		04FC0E632C0EBE7E00B3DF83 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
+				04FC0E5D2C0974D400B3DF83 /* Constants.swift */,
+				04FC0E772C171F9100B3DF83 /* Model */,
 				04FC0E642C0EBE9C00B3DF83 /* AuthViewController.swift */,
 				04FC0E662C16BAF700B3DF83 /* WebViewViewController.swift */,
 			);
@@ -131,24 +134,35 @@
 			children = (
 				04FC0E6C2C16F27200B3DF83 /* OAuth2Service.swift */,
 				04FC0E6D2C16F27200B3DF83 /* OAuth2TokenStorage.swift */,
+				04FC0E732C1719EB00B3DF83 /* OAuth2TokenStorageProtocol.swift */,
 			);
 			path = OAuth2;
 			sourceTree = "<group>";
 		};
-		04FC0E6F2C16F27200B3DF83 /* ServiceAccessLayer */ = {
+		04FC0E6F2C16F27200B3DF83 /* NetworkError */ = {
 			isa = PBXGroup;
 			children = (
-				04FC0E6E2C16F27200B3DF83 /* OAuth2 */,
+				04FC0E6A2C16F07B00B3DF83 /* URLSession+data.swift */,
 			);
-			path = ServiceAccessLayer;
+			path = NetworkError;
 			sourceTree = "<group>";
 		};
 		04FC0E722C16F65C00B3DF83 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				04FC0E6A2C16F07B00B3DF83 /* URLSession+data.swift */,
+				04FC0E6E2C16F27200B3DF83 /* OAuth2 */,
+				04FC0E6F2C16F27200B3DF83 /* NetworkError */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		04FC0E772C171F9100B3DF83 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				04FC0E752C171F9100B3DF83 /* OAuthTokenResponseBody.swift */,
+				04FC0E722C16F65C00B3DF83 /* Services */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -230,8 +244,10 @@
 				041D52232BE36BF60061F141 /* AppDelegate.swift in Sources */,
 				04FC0E652C0EBE9C00B3DF83 /* AuthViewController.swift in Sources */,
 				04FC0E5E2C0974D400B3DF83 /* Constants.swift in Sources */,
+				04FC0E742C1719EB00B3DF83 /* OAuth2TokenStorageProtocol.swift in Sources */,
 				048336B02BFD8DCF008BB424 /* SingleImageViewController.swift in Sources */,
 				04FC0E6B2C16F07B00B3DF83 /* URLSession+data.swift in Sources */,
+				04FC0E782C171F9100B3DF83 /* OAuthTokenResponseBody.swift in Sources */,
 				04FC0E672C16BAF700B3DF83 /* WebViewViewController.swift in Sources */,
 				04FC0E712C16F27200B3DF83 /* OAuth2TokenStorage.swift in Sources */,
 				041D52252BE36BF60061F141 /* SceneDelegate.swift in Sources */,
