@@ -2,18 +2,16 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     private let imageView: UIImageView = {
-           let profileImage = UIImage(named: "avatar")
-           let imageView = UIImageView (image: profileImage)
-           imageView.tintColor = .gray
-           imageView.translatesAutoresizingMaskIntoConstraints = false
-           return imageView
-       }()
-    
+        let profileImage = UIImage(named: "avatar")
+        let imageView = UIImageView (image: profileImage)
+        imageView.tintColor = .gray
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(imageView)
         setupConstraints()
-
         
         let userName = UILabel()
         userName.text = "Екатерина Новикова"
@@ -55,12 +53,12 @@ final class ProfileViewController: UIViewController {
     }
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-                  imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-                  imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant:  20),
-                  imageView.widthAnchor.constraint(equalToConstant: 70),
-                  imageView.heightAnchor.constraint(equalToConstant: 70)
-              ])
-      }
+            imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant:  20),
+            imageView.widthAnchor.constraint(equalToConstant: 70),
+            imageView.heightAnchor.constraint(equalToConstant: 70)
+        ])
+    }
     @objc private func didTapButton() {
         for view in view.subviews {
             if view is UILabel {
