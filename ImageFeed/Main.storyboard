@@ -297,20 +297,28 @@
                                     <action selector="didTapBackButton:" destination="7r0-MV-6AR" eventType="touchUpInside" id="3W3-Im-AsR"/>
                                 </connections>
                             </button>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="sRD-gA-jAi">
+                                <rect key="frame" x="0.0" y="44" width="414" height="4"/>
+                                <color key="progressTintColor" name="YP Black"/>
+                            </progressView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="odA-7N-emz"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="odA-7N-emz" firstAttribute="trailing" secondItem="sRD-gA-jAi" secondAttribute="trailing" id="0SU-IQ-8fk"/>
                             <constraint firstAttribute="trailing" secondItem="fE0-9M-nvh" secondAttribute="trailing" id="80z-fR-QNU"/>
                             <constraint firstItem="fE0-9M-nvh" firstAttribute="leading" secondItem="NkP-ZF-CpC" secondAttribute="leading" id="BJO-Ge-Ezf"/>
+                            <constraint firstItem="sRD-gA-jAi" firstAttribute="leading" secondItem="odA-7N-emz" secondAttribute="leading" id="O6Y-sJ-7wm"/>
                             <constraint firstItem="Fol-7v-7gN" firstAttribute="top" secondItem="odA-7N-emz" secondAttribute="top" id="Ylo-MU-XIE"/>
                             <constraint firstItem="Fol-7v-7gN" firstAttribute="leading" secondItem="odA-7N-emz" secondAttribute="leading" id="ZuJ-wT-tvP"/>
                             <constraint firstAttribute="bottom" secondItem="fE0-9M-nvh" secondAttribute="bottom" id="ip0-ii-lY3"/>
+                            <constraint firstItem="sRD-gA-jAi" firstAttribute="top" secondItem="Fol-7v-7gN" secondAttribute="bottom" id="jKb-3P-G9h"/>
                             <constraint firstItem="fE0-9M-nvh" firstAttribute="top" secondItem="NkP-ZF-CpC" secondAttribute="top" id="koL-an-xQk"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="YJY-j3-6f4"/>
                     <connections>
+                        <outlet property="progressView" destination="sRD-gA-jAi" id="dCR-6M-OO6"/>
                         <outlet property="webView" destination="fE0-9M-nvh" id="0pb-bg-0B7"/>
                     </connections>
                 </viewController>
