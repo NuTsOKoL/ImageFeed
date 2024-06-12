@@ -25,6 +25,7 @@
 		04FC0E712C16F27200B3DF83 /* OAuth2TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FC0E6D2C16F27200B3DF83 /* OAuth2TokenStorage.swift */; };
 		04FC0E782C171F9100B3DF83 /* OAuthTokenResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FC0E752C171F9100B3DF83 /* OAuthTokenResponseBody.swift */; };
 		04FC0E7B2C172E5400B3DF83 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FC0E792C172E5400B3DF83 /* SplashViewController.swift */; };
+		04FC0E802C1A2FF200B3DF83 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FC0E7F2C1A2FF200B3DF83 /* CustomNavigationController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		04FC0E6D2C16F27200B3DF83 /* OAuth2TokenStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2TokenStorage.swift; sourceTree = "<group>"; };
 		04FC0E752C171F9100B3DF83 /* OAuthTokenResponseBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthTokenResponseBody.swift; sourceTree = "<group>"; };
 		04FC0E792C172E5400B3DF83 /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		04FC0E7F2C1A2FF200B3DF83 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 				041D527B2BE9FDF00061F141 /* ImagesList */,
 				048336AE2BFBC699008BB424 /* Profile */,
 				048336B12BFD91BA008BB424 /* SingleImageView */,
+				04FC0E7F2C1A2FF200B3DF83 /* CustomNavigationController.swift */,
 				048336B22BFD998F008BB424 /* Main.storyboard */,
 				041D522B2BE36BF90061F141 /* Assets.xcassets */,
 				041D522D2BE36BF90061F141 /* LaunchScreen.storyboard */,
@@ -251,6 +254,7 @@
 				048336AC2BFBBA25008BB424 /* ProfileViewController.swift in Sources */,
 				041D52232BE36BF60061F141 /* AppDelegate.swift in Sources */,
 				04FC0E652C0EBE9C00B3DF83 /* AuthViewController.swift in Sources */,
+				04FC0E802C1A2FF200B3DF83 /* CustomNavigationController.swift in Sources */,
 				04FC0E5E2C0974D400B3DF83 /* Constants.swift in Sources */,
 				048336B02BFD8DCF008BB424 /* SingleImageViewController.swift in Sources */,
 				04FC0E7B2C172E5400B3DF83 /* SplashViewController.swift in Sources */,
