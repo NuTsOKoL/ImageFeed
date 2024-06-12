@@ -1,7 +1,7 @@
 import UIKit
 
 final class OAuth2Service {
-   
+    
     private (set) var authToken: String? {
         get {
             return OAuth2TokenStorage.shared.token
@@ -11,7 +11,7 @@ final class OAuth2Service {
         }
     }
     
-   private func makeOAuthTokenRequest(code: String?) -> URLRequest? {
+    private func makeOAuthTokenRequest(code: String?) -> URLRequest? {
         guard let code = code else {
             print("Authorization code is nil")
             return nil
@@ -22,10 +22,10 @@ final class OAuth2Service {
             URLQueryItem(name: "client_id", value: Constants.accessKey),
             URLQueryItem(name: "client_secret", value: Constants.secretKey),
             URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-            URLQueryItem(name: "response_type", value: code),
+            URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "scope", value: Constants.accessScope)
         ]
-       guard let url = urlComponents.url(relativeTo: Constants.defaultBaseURL) else {
+        guard let url = urlComponents.url(relativeTo: Constants.defaultBaseURL) else {
             print("Failed to create URL")
             return nil
         }
@@ -33,7 +33,8 @@ final class OAuth2Service {
         request.httpMethod = "POST"
         return request
     }
-    func fetchOAuthToken(with code: String, 
+    
+    func fetchOAuthToken(with code: String,
                          completion: @escaping (Result<String, Error>) -> Void) {
         guard let request = makeOAuthTokenRequest(code: code) else {
             completion(.failure(URLError(.badURL)))
