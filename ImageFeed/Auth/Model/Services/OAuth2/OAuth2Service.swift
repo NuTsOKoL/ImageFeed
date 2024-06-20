@@ -11,29 +11,6 @@ final class OAuth2Service {
         }
     }
     
-    private func makeOAuthTokenRequest(code: String?) -> URLRequest? {
-        guard let code = code else {
-            print("Authorization code is nil")
-            return nil
-        }
-        var urlComponents = URLComponents()
-        urlComponents.path = Constants.authPath
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: Constants.accessKey),
-            URLQueryItem(name: "client_secret", value: Constants.secretKey),
-            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-            URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: Constants.accessScope)
-        ]
-        guard let url = urlComponents.url(relativeTo: Constants.defaultBaseURL) else {
-            print("Failed to create URL")
-            return nil
-        }
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        return request
-    }
-    
     func fetchOAuthToken(with code: String,
                          completion: @escaping (Result<String, Error>) -> Void) {
         guard let request = makeOAuthTokenRequest(code: code) else {
@@ -58,5 +35,28 @@ final class OAuth2Service {
             }
         }
         task.resume()
+    }
+    
+    private func makeOAuthTokenRequest(code: String?) -> URLRequest? {
+        guard code != nil else {
+            print("Authorization code is nil")
+            return nil
+        }
+        var urlComponents = URLComponents()
+        urlComponents.path = Constants.authPath
+        urlComponents.queryItems = [
+            URLQueryItem(name: "client_id", value: Constants.accessKey),
+            URLQueryItem(name: "client_secret", value: Constants.secretKey),
+            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
+            URLQueryItem(name: "code", value: code),
+            URLQueryItem(name: "grant_type", value: "authorization_code")
+        ]
+        guard let url = urlComponents.url(relativeTo: Constants.defaultBaseURL) else {
+            print("Failed to create URL")
+            return nil
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        return request
     }
 }
