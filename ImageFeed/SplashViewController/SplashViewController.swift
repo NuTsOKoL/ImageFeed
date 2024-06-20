@@ -2,12 +2,12 @@ import UIKit
 
 final class SplashViewController: UIViewController {
     private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
-    private let oauth2Service = OAuth2Service()
-    private let oauth2TokenStorage = OAuth2TokenStorage.shared
+    private let oAuth2Service = OAuth2Service()
+    private let oAuth2TokenStorage = OAuth2TokenStorage.shared
     //MARK: - Lifecycle
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if oauth2TokenStorage.token != nil {
+        if oAuth2TokenStorage.token != nil {
             switchToTabBarController()
         } else {
             performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
@@ -46,12 +46,15 @@ extension SplashViewController: AuthViewControllerDelegate {
         }
     }
     private func fetchOAuthToken(_ code: String) {
-        oauth2Service.fetchOAuthToken(with: code) { [weak self] result in
+        UIBlockingProgressHUD.show()
+        oAuth2Service.fetchOAuthToken(with: code) { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success:
-                self.switchToTabBarController()
-                return
+            case .success(let accessToken):
+                self.oAuth2TokenStorage.token = accessToken
+                guard let token = oAuth2TokenStorage.token else { return }
+
+                UIBlockingProgressHUD.dismiss()
             case .failure(let error):
                 print("Ошибка при получении OAuth токена: \(error.localizedDescription)")
             }

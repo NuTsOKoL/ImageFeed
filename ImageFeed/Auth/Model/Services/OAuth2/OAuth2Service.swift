@@ -1,5 +1,9 @@
 import UIKit
 
+enum AuthServiceError: Error {
+    case invalidRequest
+}
+
 final class OAuth2Service {
     
     private (set) var authToken: String? {
@@ -11,31 +15,47 @@ final class OAuth2Service {
         }
     }
     
+    private let urlSession = URLSession.shared
+    private var task: URLSessionTask?
+    private var lastCode: String?
+    
     func fetchOAuthToken(with code: String,
                          completion: @escaping (Result<String, Error>) -> Void) {
-        guard let request = makeOAuthTokenRequest(code: code) else {
-            completion(.failure(URLError(.badURL)))
-            print("Authorization code is nil or failed to create URL")
-            return
-        }
-        let task = URLSession.shared.data(for: request) { result in
-            switch result {
-            case .success(let data):
-                do {
-                    let tokenResponse = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                    OAuth2TokenStorage.shared.token = tokenResponse.accessToken
-                    completion(.success(tokenResponse.accessToken ?? "accessToken"))
-                } catch {
-                    completion(.failure(error))
-                    print("Failed to decode OAuthTokenResponseBody")
-                }
-            case .failure(let error):
-                completion(.failure(error))
-                print("Failed to fetch OAuth token")
+        assert(Thread.isMainThread)
+        
+        if task != nil {
+            if lastCode != code {
+                task?.cancel()
+            } else {
+                completion(.failure(AuthServiceError.invalidRequest))
+                print("Authorization code is nil or failed to create URL")
+                return
             }
         }
-        task.resume()
-    }
+        lastCode = code
+        guard let requestCode = makeOAuthTokenRequest(code: code) else {
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        
+        let task = urlSession.objectTask(for: requestCode) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let data):
+                    guard let accessToken = data.accessToken else {
+                        fatalError("Can`t decode token!")
+                    }
+                    completion(.success(accessToken))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+                    self?.task = nil
+                    self?.lastCode = nil
+                }
+            }
+            self.task = task
+            task.resume()
+        }
     
     private func makeOAuthTokenRequest(code: String?) -> URLRequest? {
         guard code != nil else {
