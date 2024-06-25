@@ -4,6 +4,9 @@ final class SplashViewController: UIViewController {
     private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let oAuth2Service = OAuth2Service()
     private let oAuth2TokenStorage = OAuth2TokenStorage.shared
+    private let profileService = ProfileService.shared
+    private let profileImageServise = ProfileImageService.shared
+    
     //MARK: - Lifecycle
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -46,18 +49,52 @@ extension SplashViewController: AuthViewControllerDelegate {
         }
     }
     private func fetchOAuthToken(_ code: String) {
-        UIBlockingProgressHUD.show()
         oAuth2Service.fetchOAuthToken(with: code) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let accessToken):
                 self.oAuth2TokenStorage.token = accessToken
-                guard let token = oAuth2TokenStorage.token else { return }
-
+                self.fetchProfile(token: accessToken)
                 UIBlockingProgressHUD.dismiss()
-            case .failure(let error):
-                print("Ошибка при получении OAuth токена: \(error.localizedDescription)")
+            case .failure(let errorFetchOAuthToken):
+                print("Ошибка при получении OAuth токена: \(errorFetchOAuthToken.localizedDescription)")
+                self.showAlertOAuth2Token(with: errorFetchOAuthToken)
+                UIBlockingProgressHUD.dismiss()
             }
         }
+    }
+    private func fetchProfile(token: String) {
+        profileService.fetchProfile(token) { [weak self] result in
+            guard let self = self else { return }
+            
+            UIBlockingProgressHUD.dismiss()
+            switch result {
+            case .success(let profile):
+                self.profileImageServise.fetchProfileImageURL(username: profile.userName) { _ in }
+                self.switchToTabBarController()
+            case .failure(let errorFetchProfile):
+                print("Ошибка при получении fetchProfile токена: \(errorFetchProfile.localizedDescription)")
+                self.showAlertProfile(with: errorFetchProfile)
+                UIBlockingProgressHUD.dismiss()
+                break
+            }
+        }
+    }
+    private func showAlertProfile(with errorFetchProfile: Error) {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так",
+            message: "Не удалось получить Профиль пользователя",
+            preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ок", style: .cancel))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func showAlertOAuth2Token(with errorFetchOAuth2Token: Error) {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так",
+            message: "Не удалось получить Токен",
+            preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ок", style: .cancel))
+        self.present(alert, animated: true, completion: nil)
     }
 }
