@@ -1,4 +1,6 @@
 import UIKit
+import ProgressHUD
+import SwiftKeychainWrapper
 
 final class SplashViewController: UIViewController {
     private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
@@ -6,19 +8,53 @@ final class SplashViewController: UIViewController {
     private let oAuth2TokenStorage = OAuth2TokenStorage.shared
     private let profileService = ProfileService.shared
     private let profileImageServise = ProfileImageService.shared
+    private var isFirstLaunch = true
+    private let splashLogoImage: UIImageView = {
+        let image = UIImage(named: "Vector")
+        let imageView = UIImageView(image: image)
+        return imageView
+    }()
     
     //MARK: - Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .ypBlack
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if oAuth2TokenStorage.token != nil {
-            switchToTabBarController()
-        } else {
-            performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
+        
+        if isFirstLaunch {
+            if oAuth2TokenStorage.token != nil {
+                guard let token = oAuth2TokenStorage.token else { return }
+                fetchProfile(token: token)
+            } else {
+                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                guard let authViewController = storyBoard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {return}
+                authViewController.delegate = self
+                authViewController.modalPresentationStyle = .fullScreen
+                self.present(authViewController, animated: true)
+            }
         }
+        isFirstLaunch = false
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    func addSubview() {
+        view.addSubview(splashLogoImage)
+        splashLogoImage.translatesAutoresizingMaskIntoConstraints = false
+        setupConstraints()
+    }
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            splashLogoImage.heightAnchor.constraint(equalToConstant: 78),
+            splashLogoImage.widthAnchor.constraint(equalToConstant: 75),
+            splashLogoImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            splashLogoImage.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
     //MARK: - Private Methods
     private func switchToTabBarController() {
@@ -45,6 +81,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
+            UIBlockingProgressHUD.show()
             self.fetchOAuthToken(code)
         }
     }

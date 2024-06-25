@@ -49,13 +49,13 @@ final class OAuth2Service {
                 case .failure(let error):
                     completion(.failure(error))
                 }
-                    self?.task = nil
-                    self?.lastCode = nil
-                }
+                self?.task = nil
+                self?.lastCode = nil
             }
-            self.task = task
-            task.resume()
         }
+        self.task = task
+        task.resume()
+    }
     
     private func makeOAuthTokenRequest(code: String?) -> URLRequest? {
         guard code != nil else {
