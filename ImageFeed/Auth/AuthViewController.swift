@@ -1,11 +1,13 @@
 import UIKit
+import ProgressHUD
 
 protocol AuthViewControllerDelegate: AnyObject {
-    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
+    func didAuthenticate(_ vc: AuthViewController, didAuthenticateWithCode code: String)
 }
 
 final class AuthViewController: UIViewController {
     private let ShowWebViewSegueIdentifier = "ShowWebView"
+    private let oauth2Service = OAuth2Service()
     
     weak var delegate: AuthViewControllerDelegate?
     
@@ -23,9 +25,38 @@ final class AuthViewController: UIViewController {
 }
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        delegate?.authViewController(self, didAuthenticateWithCode: code)
+        vc.dismiss(animated: true)
+        
+        ProgressHUD.animate()
+        fetchOAuthToken(code) { [weak self] result in
+            guard let self = self else { return }
+            
+            ProgressHUD.dismiss()
+            
+            switch result {
+            case .success:
+                self.delegate?.didAuthenticate(self, didAuthenticateWithCode: code)
+            case .failure(let error):
+                print(errorMessage(from: error))
+            }
+        }
+        func errorMessage(from error: Error) -> String {
+            switch error {
+            case NetworkError.httpStatusCode(let code):
+                return "Error \(code) when receiving token."
+            default:
+                return error.localizedDescription
+            }
+        }
     }
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
-        dismiss(animated: true, completion: nil)
+        vc.dismiss(animated: true)
+    }
+}
+extension AuthViewController {
+    private func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        oauth2Service.fetchOAuthToken(with: code) { result in
+            completion(result)
+        }
     }
 }

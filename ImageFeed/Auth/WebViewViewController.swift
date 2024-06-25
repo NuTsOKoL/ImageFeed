@@ -13,14 +13,12 @@ final class WebViewViewController: UIViewController {
     weak var delegate: WebViewViewControllerDelegate?
     
     @IBAction private func didTapBackButton(_ sender: Any?) {
-        delegate?.webViewViewControllerDidCancel(self)
-    }
+        dismiss(animated: true)    }
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.navigationDelegate = self
         loadAuthView()
-        updateProgress()
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -68,6 +66,8 @@ final class WebViewViewController: UIViewController {
         }
         let request = URLRequest(url: url)
         webView.load(request)
+        
+        updateProgress()
     }
 }
 extension WebViewViewController: WKNavigationDelegate {
