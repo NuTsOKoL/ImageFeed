@@ -4,7 +4,7 @@ import SwiftKeychainWrapper
 
 final class SplashViewController: UIViewController {
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
-    private let oAuth2Service = OAuth2Service()
+    private let oAuth2Service = OAuth2Service.shared
     private let oAuth2TokenStorage = OAuth2TokenStorage.shared
     private let profileService = ProfileService.shared
     private let profileImageServise = ProfileImageService.shared
@@ -30,7 +30,7 @@ final class SplashViewController: UIViewController {
                 fetchProfile(token: token)
             } else {
                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-                guard let authViewController = storyBoard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {return}
+                guard let authViewController = storyBoard.instantiateViewController(withIdentifier: "ProfileViewController") as? AuthViewController else {return}
                 authViewController.delegate = self
                 authViewController.modalPresentationStyle = .fullScreen
                 self.present(authViewController, animated: true)

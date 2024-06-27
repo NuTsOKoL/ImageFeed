@@ -7,7 +7,7 @@ protocol AuthViewControllerDelegate: AnyObject {
 
 final class AuthViewController: UIViewController {
     private let showWebViewSegueIdentifier = "ShowWebView"
-    private let oauth2Service = OAuth2Service()
+    private let oauth2Service = OAuth2Service.shared
     
     weak var delegate: AuthViewControllerDelegate?
     

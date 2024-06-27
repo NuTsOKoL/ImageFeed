@@ -18,6 +18,9 @@ final class OAuth2Service {
     private var task: URLSessionTask?
     private var lastCode: String?
     
+    static let shared = OAuth2Service()
+    private init() {}
+    
     func fetchOAuthToken(with code: String,
                          completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
