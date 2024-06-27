@@ -30,7 +30,7 @@ final class SplashViewController: UIViewController {
                 fetchProfile(token: token)
             } else {
                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-                guard let authViewController = storyBoard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {return}
+                guard let authViewController = storyBoard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {fatalError("Invalid Configuration")}
                 authViewController.delegate = self
                 authViewController.modalPresentationStyle = .fullScreen
                 self.present(authViewController, animated: true)
@@ -60,7 +60,9 @@ final class SplashViewController: UIViewController {
     }
     //MARK: - Private Methods
     private func switchToTabBarController() {
-        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+        guard let window = UIApplication.shared.windows.first else { assertionFailure("Invalid Configuration")
+            return
+        }
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarViewController")
         window.rootViewController = tabBarController
@@ -73,7 +75,10 @@ extension SplashViewController {
             guard
                 let navigationController = segue.destination as? UINavigationController,
                 let viewController = navigationController.viewControllers[0] as? AuthViewController
-            else { fatalError("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)") }
+            else {
+                assertionFailure("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)")
+                return
+            }
             viewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)
@@ -83,7 +88,7 @@ extension SplashViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        dismiss(animated: true) { [weak self] in
+        vc.dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
             UIBlockingProgressHUD.show()
             self.fetchOAuthToken(code)

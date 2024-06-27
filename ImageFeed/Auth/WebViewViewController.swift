@@ -11,15 +11,26 @@ final class WebViewViewController: UIViewController {
     @IBOutlet private var progressView: UIProgressView!
     
     weak var delegate: WebViewViewControllerDelegate?
-    
+    private var estimatedProgressObservation: NSKeyValueObservation?
+
     @IBAction private func didTapBackButton(_ sender: Any?) {
         dismiss(animated: true)    }
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.navigationDelegate = self
+        
+        estimatedProgressObservation = webView.observe(
+            \.estimatedProgress,
+             options: [],
+             changeHandler: { [weak self] _, _ in
+                 guard let self = self else { return }
+                 self.updateProgress()
+             })
+        
         loadAuthView()
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         webView.addObserver(self,
@@ -28,12 +39,14 @@ final class WebViewViewController: UIViewController {
                             context: nil)
         updateProgress()
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         webView.removeObserver(self,
                                forKeyPath: #keyPath(WKWebView.estimatedProgress),
                                context: nil)
     }
+    
     override func observeValue(forKeyPath keyPath: String?,
                                of object: Any?,
                                change: [NSKeyValueChangeKey : Any]?,
