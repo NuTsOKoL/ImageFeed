@@ -3,7 +3,7 @@ import ProgressHUD
 import SwiftKeychainWrapper
 
 final class SplashViewController: UIViewController {
-    private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
+    private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let oAuth2Service = OAuth2Service()
     private let oAuth2TokenStorage = OAuth2TokenStorage.shared
     private let profileService = ProfileService.shared
@@ -38,6 +38,7 @@ final class SplashViewController: UIViewController {
         }
         isFirstLaunch = false
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNeedsStatusBarAppearanceUpdate()
@@ -48,6 +49,7 @@ final class SplashViewController: UIViewController {
         splashLogoImage.translatesAutoresizingMaskIntoConstraints = false
         setupConstraints()
     }
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             splashLogoImage.heightAnchor.constraint(equalToConstant: 78),
@@ -64,27 +66,30 @@ final class SplashViewController: UIViewController {
         window.rootViewController = tabBarController
     }
 }
+
 extension SplashViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowAuthenticationScreenSegueIdentifier {
+        if segue.identifier == showAuthenticationScreenSegueIdentifier {
             guard
                 let navigationController = segue.destination as? UINavigationController,
                 let viewController = navigationController.viewControllers[0] as? AuthViewController
-            else { fatalError("Failed to prepare for \(ShowAuthenticationScreenSegueIdentifier)") }
+            else { fatalError("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)") }
             viewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)
         }
     }
 }
+
 extension SplashViewController: AuthViewControllerDelegate {
-    func didAuthenticate(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
+    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
             UIBlockingProgressHUD.show()
             self.fetchOAuthToken(code)
         }
     }
+    
     private func fetchOAuthToken(_ code: String) {
         oAuth2Service.fetchOAuthToken(with: code) { [weak self] result in
             guard let self = self else { return }
@@ -100,6 +105,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             }
         }
     }
+    
     private func fetchProfile(token: String) {
         profileService.fetchProfile(token) { [weak self] result in
             guard let self = self else { return }
@@ -113,10 +119,10 @@ extension SplashViewController: AuthViewControllerDelegate {
                 print("Ошибка при получении fetchProfile токена: \(errorFetchProfile.localizedDescription)")
                 self.showAlertProfile(with: errorFetchProfile)
                 UIBlockingProgressHUD.dismiss()
-                break
             }
         }
     }
+    //MARK: Alert
     private func showAlertProfile(with errorFetchProfile: Error) {
         let alert = UIAlertController(
             title: "Что-то пошло не так",

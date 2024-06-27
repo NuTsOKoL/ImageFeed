@@ -5,7 +5,6 @@ enum AuthServiceError: Error {
 }
 
 final class OAuth2Service {
-    
     private (set) var authToken: String? {
         get {
             return OAuth2TokenStorage.shared.token
@@ -24,13 +23,12 @@ final class OAuth2Service {
         assert(Thread.isMainThread)
         
         if task != nil {
-            if lastCode != code {
-                task?.cancel()
-            } else {
+            guard lastCode != code else {
                 completion(.failure(AuthServiceError.invalidRequest))
                 print("Authorization code is nil or failed to create URL")
                 return
             }
+            task?.cancel()
         }
         lastCode = code
         guard let requestCode = makeOAuthTokenRequest(code: code) else {

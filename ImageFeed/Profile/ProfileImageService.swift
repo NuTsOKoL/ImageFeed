@@ -3,10 +3,11 @@ final class ProfileImageService {
     private (set) var avatarURL: String?
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
-    private let decoder = JSONDecoder()
     private var lastUserName: String?
-    static let shared = ProfileImageService()
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
+    
+    static let shared = ProfileImageService()
+    private init() {}
     
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
@@ -40,7 +41,6 @@ final class ProfileImageService {
 }
 
 extension ProfileImageService {
-    
     private func makeRequest(username: String) -> URLRequest {
         var urlComponents = URLComponents()
         urlComponents.path = "/users/\(username)"

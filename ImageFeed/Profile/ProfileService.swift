@@ -3,10 +3,11 @@ import UIKit
 final class ProfileService {
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
-    private let decoder = JSONDecoder()
     private(set) var profile: Profile?
-    static let shared = ProfileService()
     private var lastCode: String?
+    
+    static let shared = ProfileService()
+    private init() {}
     
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
@@ -35,7 +36,6 @@ final class ProfileService {
 }
 
 extension ProfileService {
-    
     private func makeRequest(token: String) -> URLRequest {
         var urlComponents = URLComponents()
         urlComponents.path = "/me"
