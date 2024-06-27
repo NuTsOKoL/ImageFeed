@@ -30,7 +30,7 @@ final class SplashViewController: UIViewController {
                 fetchProfile(token: token)
             } else {
                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-                guard let authViewController = storyBoard.instantiateViewController(withIdentifier: "ProfileViewController") as? AuthViewController else {return}
+                guard let authViewController = storyBoard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {return}
                 authViewController.delegate = self
                 authViewController.modalPresentationStyle = .fullScreen
                 self.present(authViewController, animated: true)
