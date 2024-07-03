@@ -8,8 +8,8 @@ struct Profile {
     
     init(result: ProfileResult) {
         self.userName = result.userName
-        self.name = ("\(result.firstName) \(result.lastName ?? "")")
+        self.name = ("\(result.firstName ?? "") \(result.lastName ?? "")")
         self.loginName = "@\(result.userName)"
-        self.bio = ("\(result.bio ?? "")")
+        self.bio = result.bio
     }
 }
