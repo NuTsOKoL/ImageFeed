@@ -11,32 +11,32 @@ final class ProfileImageService {
     
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
+        if lastUserName == username {return}
         task?.cancel()
-        if lastUserName == username, let avatarURL {
-            completion(.success(avatarURL))
-            return
-        }
         lastUserName = username
         
         let request = makeRequest(username: username)
-        task = urlSession.objectTask(for: request) {[weak self] (result: Result<UserResult, Error>) in
+        let task = urlSession.objectTask(for: request) {[weak self] (result: Result<UserResult, Error>) in
             guard let self = self else {return}
-            switch result {
-            case .success(let profileImage):
-                let profileImageURL = profileImage.profileImage.medium
-                self.avatarURL = profileImageURL
-                completion(.success(profileImageURL))
-                NotificationCenter.default.post(
-                    name: ProfileImageService.didChangeNotification,
-                    object: self,
-                    userInfo: ["URL": profileImageURL])
-            case .failure(let error):
-                completion(.failure(error))
-                self.lastUserName = nil
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let profileImage):
+                    let profileImageURL = profileImage.profileImage.small
+                    self.avatarURL = profileImageURL
+                    completion(.success(profileImageURL))
+                    NotificationCenter.default.post(
+                        name: ProfileImageService.didChangeNotification,
+                        object: self,
+                        userInfo: ["URL": profileImageURL])
+                    self.task = nil
+                case .failure(let error):
+                    completion(.failure(error))
+                    self.lastUserName = nil
+                }
             }
-            self.task = nil
         }
-        task?.resume()
+            self.task = nil
+        task.resume()
     }
 }
 

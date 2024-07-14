@@ -1,9 +1,5 @@
 import UIKit
 
-enum AuthServiceError: Error {
-    case invalidRequest
-}
-
 final class OAuth2Service {
     private (set) var authToken: String? {
         get {
@@ -58,22 +54,20 @@ final class OAuth2Service {
         task.resume()
     }
     
-    private func makeOAuthTokenRequest(code: String?) -> URLRequest? {
-        guard code != nil else {
-            print("Authorization code is nil")
-            return nil
+    private func makeOAuthTokenRequest(code: String) -> URLRequest? {
+        guard let baseURL = URL(string: OAuthConstants.baseURL) else {
+            preconditionFailure("Unable to construct baseUrl")
         }
-        var urlComponents = URLComponents()
-        urlComponents.path = Constants.authPath
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: Constants.accessKey),
-            URLQueryItem(name: "client_secret", value: Constants.secretKey),
-            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-            URLQueryItem(name: "code", value: code),
-            URLQueryItem(name: "grant_type", value: "authorization_code")
-        ]
-        guard let url = urlComponents.url(relativeTo: Constants.defaultBaseURL) else {
-            print("Failed to create URL")
+        guard let url = URL(
+            string: "/oauth/token"
+            + "?client_id=\(Constants.accessKey)"
+            + "&&client_secret=\(Constants.secretKey)"
+            + "&&redirect_uri=\(Constants.redirectURI)"
+            + "&&code=\(code)"
+            + "&&grant_type=authorization_code",
+            relativeTo: baseURL
+            ) else {
+            assertionFailure("Failed to create URL")
             return nil
         }
         var request = URLRequest(url: url)

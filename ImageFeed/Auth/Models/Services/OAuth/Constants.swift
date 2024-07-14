@@ -8,3 +8,9 @@ enum Constants {
     static let defaultBaseURL = URL(string: "https://api.unsplash.com")
     static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
 }
+enum OAuthConstants {
+    static let baseURL = "https://unsplash.com"
+}
+enum ProfileConstants {
+    static let urlProfilePath = "https://api.unsplash.com/me"
+}

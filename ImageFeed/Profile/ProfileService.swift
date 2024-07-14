@@ -15,7 +15,10 @@ final class ProfileService {
         task?.cancel()
         lastCode = token
         
-        let request = makeRequest(token: token)
+        guard let request = makeRequest(token: token) else {
+            completion(.failure(ProfileServiceError.invalidRequest))
+            return
+        }
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>)  in
             guard let self = self else { return }
             switch result {
@@ -36,10 +39,13 @@ final class ProfileService {
 }
 
 extension ProfileService {
-    private func makeRequest(token: String) -> URLRequest {
-        var urlComponents = URLComponents()
-        urlComponents.path = "/me"
-        guard let url = urlComponents.url(relativeTo: Constants.defaultBaseURL) else { fatalError("Failed to create URL") }
+    private func makeRequest(token: String) -> URLRequest? {
+        
+        guard let url = URL(string: ProfileConstants.urlProfilePath)
+        else {
+            assertionFailure("Ошибка создания url профиля")
+            return nil
+        }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")

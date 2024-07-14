@@ -15,7 +15,7 @@ final class AuthViewController: UIViewController {
         if segue.identifier == showWebViewSegueIdentifier {
             guard let webViewViewController = segue.destination as? WebViewViewController
             else {
-                fatalError("Failed to prepare for \(showWebViewSegueIdentifier)")
+                fatalError("Не удалось подготовиться к  \(showWebViewSegueIdentifier)")
             }
             webViewViewController.delegate = self
         } else {
@@ -43,7 +43,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
     private func errorMessage(from error: Error) -> String {
         switch error {
         case NetworkError.httpStatusCode(let code):
-            return "Error \(code) when receiving token."
+            return "Ошибка \(code) при получении токена."
         default:
             return error.localizedDescription
         }

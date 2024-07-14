@@ -12,7 +12,7 @@ extension URLSession {
                 completion(result)
             }
         }
-        let task = dataTask(with: request, completionHandler: { data, response, error in
+        let task = dataTask(with: request) { data, response, error in
             if let data = data, 
                 let response = response,
                 let statusCode = (response as? HTTPURLResponse)?.statusCode {
@@ -36,7 +36,19 @@ extension URLSession {
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlSessionError))
                 print("URLSession Error")
             }
-        })
+        }
         return task
     }
+}
+
+enum ProfileServiceError: Error {
+    case invalidRequest
+}
+
+enum ImageServiceError: Error {
+    case invalidRequest
+}
+
+enum AuthServiceError: Error {
+    case invalidRequest
 }
