@@ -24,7 +24,7 @@ final class OAuth2Service {
         if task != nil {
             guard lastCode != code else {
                 completion(.failure(AuthServiceError.invalidRequest))
-                print("Authorization code is nil or failed to create URL")
+                print("Код авторизации равен нулю или не удалось создать URL-адрес")
                 return
             }
             task?.cancel()
@@ -40,7 +40,7 @@ final class OAuth2Service {
                 switch result {
                 case .success(let data):
                     guard let accessToken = data.accessToken else {
-                        fatalError("Can`t decode token!")
+                        fatalError("Не удается расшифровать токен!")
                     }
                     completion(.success(accessToken))
                 case .failure(let error):
@@ -56,7 +56,7 @@ final class OAuth2Service {
     
     private func makeOAuthTokenRequest(code: String) -> URLRequest? {
         guard let baseURL = URL(string: OAuthConstants.baseURL) else {
-            preconditionFailure("Unable to construct baseUrl")
+            preconditionFailure("Не удалось создать baseUrl")
         }
         guard let url = URL(
             string: "/oauth/token"
@@ -67,7 +67,7 @@ final class OAuth2Service {
             + "&&grant_type=authorization_code",
             relativeTo: baseURL
             ) else {
-            assertionFailure("Failed to create URL")
+            assertionFailure("Не удалось создать URL-адрес")
             return nil
         }
         var request = URLRequest(url: url)

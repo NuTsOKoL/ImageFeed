@@ -5,12 +5,15 @@ enum Constants {
     static let redirectURI = "urn:ietf:wg:oauth:2.0:oob"
     static let accessScope = "public+read_user+write_likes"
     static let authPath: String = "oauth/token/"
-    static let defaultBaseURL = URL(string: "https://api.unsplash.com")
-    static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
+    static let defaultBaseURL = URL(string: "https://api.unsplash.com/")
 }
 enum OAuthConstants {
     static let baseURL = "https://unsplash.com"
 }
 enum ProfileConstants {
     static let urlProfilePath = "https://api.unsplash.com/me"
+}
+enum WebViewConstants {
+    static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
+    static let urlComponentsPath = "/oauth/authorize/native"
 }
