@@ -7,7 +7,7 @@ final class WebViewViewController: UIViewController {
     
     weak var delegate: WebViewViewControllerDelegate?
     private var estimatedProgressObservation: NSKeyValueObservation?
-
+    
     @IBAction private func didTapBackButton(_ sender: Any?) {
         dismiss(animated: true)    }
     //MARK: - Lifecycle

@@ -20,7 +20,6 @@ final class OAuth2Service {
     func fetchOAuthToken(with code: String,
                          completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
-        
         if task != nil {
             guard lastCode != code else {
                 completion(.failure(AuthServiceError.invalidRequest))
@@ -66,7 +65,7 @@ final class OAuth2Service {
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             relativeTo: baseURL
-            ) else {
+        ) else {
             assertionFailure("Не удалось создать URL-адрес")
             return nil
         }

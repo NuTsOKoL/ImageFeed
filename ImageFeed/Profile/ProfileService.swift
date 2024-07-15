@@ -18,19 +18,21 @@ final class ProfileService {
         guard let request = makeRequest(token: token) else {
             completion(.failure(ProfileServiceError.invalidRequest))
             return
+            
         }
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>)  in
             guard let self = self else { return }
-            switch result {
-            case .success(let profileResult):
-                self.profile = Profile(result: profileResult)
-                guard let profile = self.profile else {return}
-                completion(.success(profile))
-                self.profile = profile
-                self.task = nil
-            case .failure(let error):
-                completion(.failure(error))
-                self.lastCode = nil
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let profileResult):
+                    let person = Profile(result: profileResult)
+                    completion(.success(person))
+                    self.profile = person
+                    self.task = nil
+                case .failure(let error):
+                    completion(.failure(error))
+                    self.lastCode = nil
+                }
             }
         }
         self.task = task
@@ -49,6 +51,7 @@ extension ProfileService {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        print(request)
         return request
     }
 }
