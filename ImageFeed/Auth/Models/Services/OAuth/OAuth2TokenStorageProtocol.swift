@@ -1,4 +1,3 @@
-
 import UIKit
 
 protocol OAuth2TokenStorageProtocol {
