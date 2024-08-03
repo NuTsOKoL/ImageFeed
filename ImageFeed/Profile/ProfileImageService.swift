@@ -1,4 +1,5 @@
 import UIKit
+
 final class ProfileImageService {
     private (set) var avatarURL: String?
     private let urlSession = URLSession.shared

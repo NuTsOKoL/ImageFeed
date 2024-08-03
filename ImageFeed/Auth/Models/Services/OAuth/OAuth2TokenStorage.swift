@@ -24,4 +24,8 @@ final class OAuth2TokenStorage: OAuth2TokenStorageProtocol {
             }
         }
     }
+    
+    func logout() {
+        keyChain.removeObject(forKey: Keys.token.rawValue)
+    }
 }

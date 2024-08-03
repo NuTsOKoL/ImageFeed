@@ -18,6 +18,7 @@
 		045B9AC42C2D74210071FF05 /* ProfileResultModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045B9AC32C2D74210071FF05 /* ProfileResultModels.swift */; };
 		045B9ADE2C43D2970071FF05 /* WebViewViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045B9ADD2C43D2970071FF05 /* WebViewViewControllerDelegate.swift */; };
 		045B9AE22C4612C40071FF05 /* OAuth2TokenStorageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045B9AE12C4612C40071FF05 /* OAuth2TokenStorageProtocol.swift */; };
+		045B9AEC2C4DFF670071FF05 /* AuthViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045B9AEB2C4DFF670071FF05 /* AuthViewControllerDelegate.swift */; };
 		048336AC2BFBBA25008BB424 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048336AB2BFBBA24008BB424 /* ProfileViewController.swift */; };
 		048336B02BFD8DCF008BB424 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048336AF2BFD8DCF008BB424 /* SingleImageViewController.swift */; };
 		048336B32BFD998F008BB424 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 048336B22BFD998F008BB424 /* Main.storyboard */; };
@@ -53,6 +54,7 @@
 		045B9AC32C2D74210071FF05 /* ProfileResultModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileResultModels.swift; sourceTree = "<group>"; };
 		045B9ADD2C43D2970071FF05 /* WebViewViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewViewControllerDelegate.swift; sourceTree = "<group>"; };
 		045B9AE12C4612C40071FF05 /* OAuth2TokenStorageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2TokenStorageProtocol.swift; sourceTree = "<group>"; };
+		045B9AEB2C4DFF670071FF05 /* AuthViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthViewControllerDelegate.swift; sourceTree = "<group>"; };
 		048336AB2BFBBA24008BB424 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		048336AF2BFD8DCF008BB424 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		048336B22BFD998F008BB424 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -108,12 +110,12 @@
 				041D52222BE36BF60061F141 /* AppDelegate.swift */,
 				041D52242BE36BF60061F141 /* SceneDelegate.swift */,
 				04FC0EB92C2AEF4C00B3DF83 /* TabBarController.swift */,
+				04FC0E7F2C1A2FF200B3DF83 /* CustomNavigationController.swift */,
 				04FC0E632C0EBE7E00B3DF83 /* Auth */,
 				04FC0E7A2C172E5400B3DF83 /* SplashViewController */,
 				041D527B2BE9FDF00061F141 /* ImagesList */,
 				048336AE2BFBC699008BB424 /* Profile */,
 				048336B12BFD91BA008BB424 /* SingleImageView */,
-				04FC0E7F2C1A2FF200B3DF83 /* CustomNavigationController.swift */,
 				048336B22BFD998F008BB424 /* Main.storyboard */,
 				041D522B2BE36BF90061F141 /* Assets.xcassets */,
 				041D522D2BE36BF90061F141 /* LaunchScreen.storyboard */,
@@ -153,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				04FC0E642C0EBE9C00B3DF83 /* AuthViewController.swift */,
+				045B9AEB2C4DFF670071FF05 /* AuthViewControllerDelegate.swift */,
 				04FC0E662C16BAF700B3DF83 /* WebViewViewController.swift */,
 				045B9ADD2C43D2970071FF05 /* WebViewViewControllerDelegate.swift */,
 				04FC0E772C171F9100B3DF83 /* Models */,
@@ -309,6 +312,7 @@
 				04FC0E6B2C16F07B00B3DF83 /* URLSession+data.swift in Sources */,
 				04FC0EBA2C2AEF4C00B3DF83 /* TabBarController.swift in Sources */,
 				04FC0E782C171F9100B3DF83 /* OAuthTokenResponseBody.swift in Sources */,
+				045B9AEC2C4DFF670071FF05 /* AuthViewControllerDelegate.swift in Sources */,
 				04FC0E672C16BAF700B3DF83 /* WebViewViewController.swift in Sources */,
 				04FC0EB22C2AA07300B3DF83 /* UserResultModels.swift in Sources */,
 				045B9AE22C4612C40071FF05 /* OAuth2TokenStorageProtocol.swift in Sources */,
