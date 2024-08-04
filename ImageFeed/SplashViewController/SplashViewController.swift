@@ -115,15 +115,26 @@ extension SplashViewController: AuthViewControllerDelegate {
         }
     }
     
+    private func fetchProfileImage(userName: String) {
+        profileImageServise.fetchProfileImageURL(username: userName) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            guard let self = self else { return }
+            switch result {
+            case .success:
+                self.switchToTabBarController()
+            case .failure(let errorFetchProfile):
+                print("Ошибка при получении fetchProfile токена: \(errorFetchProfile.localizedDescription)")
+                self.showAlertProfile(with: errorFetchProfile)
+            }
+        }
+    }
+    
     private func fetchProfile(token: String) {
         profileService.fetchProfile(token) { [weak self] result in
             guard let self = self else { return }
-            
-            UIBlockingProgressHUD.dismiss()
             switch result {
             case .success(let profile):
-                self.profileImageServise.fetchProfileImageURL(username: profile.userName) { _ in }
-                self.switchToTabBarController()
+                self.fetchProfileImage(userName: profile.userName)
             case .failure(let errorFetchProfile):
                 print("Ошибка при получении fetchProfile токена: \(errorFetchProfile.localizedDescription)")
                 self.showAlertProfile(with: errorFetchProfile)
