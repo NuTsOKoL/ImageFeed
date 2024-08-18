@@ -8,7 +8,7 @@ final class OAuth2TokenStorage: OAuth2TokenStorageProtocol {
     }
     
     static let shared = OAuth2TokenStorage()
-    private init() {}
+    init() {}
     
     private let keyChain = KeychainWrapper.standard
     
