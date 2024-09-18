@@ -16,7 +16,7 @@ final class ProfileService {
         lastCode = token
         
         guard let request = makeRequest(token: token) else {
-            completion(.failure(ProfileServiceError.invalidRequest))
+            completion(.failure(AuthServiceError.invalidRequest))
             return
             
         }
@@ -53,5 +53,8 @@ extension ProfileService {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         print(request)
         return request
+    }
+    func cleanProfile() {
+        profile = nil
     }
 }

@@ -1,17 +1,24 @@
 import UIKit
 import ProgressHUD
 
+
+
 final class AuthViewController: UIViewController {
+    weak var delegate: AuthViewControllerDelegate?
+    
     private let showWebViewSegueIdentifier = "ShowWebView"
     private let oauth2Service = OAuth2Service.shared
     
-    weak var delegate: AuthViewControllerDelegate?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showWebViewSegueIdentifier {
-            guard let webViewViewController = segue.destination as? WebViewViewController
-            else {
-                fatalError("Не удалось подготовиться к  \(showWebViewSegueIdentifier)")
+            guard let webViewViewController = segue.destination as? WebViewViewController else {
+                assertionFailure("Failed to prepare for \(showWebViewSegueIdentifier)")
+                return
             }
             webViewViewController.delegate = self
         } else {
@@ -21,21 +28,28 @@ final class AuthViewController: UIViewController {
 }
 
 extension AuthViewController: WebViewViewControllerDelegate {
-    
-    
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        delegate?.authViewController(self, didAuthenticateWithCode: code)
-    }
-    func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
-        dismiss(animated: true)
-    }
-}
+        vc.dismiss(animated: true)
 
-extension AuthViewController {
-    private func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
-        oauth2Service.fetchOAuthToken(with: code) { result in
-            completion(result)
+        UIBlockingProgressHUD.show() // показать индикатор загрузки
+        
+        oauth2Service.fetchOAuthToken(code: code) { [weak self] result in
+            guard let self = self else { return }
+            
+            UIBlockingProgressHUD.dismiss() // скрыть индикатор загрузки
+            
+            switch result {
+            case .success:
+                self.delegate?.didAuthenticate(self)
+            case .failure(let error):
+                print(error)
+                DispatchQueue.main.async {
+                    // показываем алерт с ошибкой
+                    let alert = UIAlertController(title: "Что-то пошло не так :(", message: "Не удалось войти в систему", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
         }
     }
 }
-

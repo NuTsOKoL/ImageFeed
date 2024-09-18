@@ -1,91 +1,110 @@
 import Foundation
 
 final class ImagesListService {
-    private (set) var photos: [Photo] = []
-    private var lastLoadedPage: Int?
-
-    private var task: URLSessionTask?
-    private let urlSession = URLSession.shared
-    private let storage = OAuth2TokenStorage()
-    
-    let dateFormatter = ISO8601DateFormatter()
-    
+    static let shared = ImagesListService()
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
-    static let shared = ImagesListService()
-    private init() {}
+    private (set) var photos: [Photo] = []
     
-    func makeImageRequest(page: Int) -> URLRequest? {
-        guard let baseUrl = URL(string: Constants.defaultBaseURL) else {
-            preconditionFailure("Ошибка создания baseUrl")
-        }
-        
-        guard let url = URL(string: "/photos"
-                            + "?page=\(page)"
-                            + "&&per_page=10",
-                            relativeTo: baseUrl) else {
-            assertionFailure("Ошибка создания url")
-            return nil
-        }
-        
-        guard let token = storage.token else {
-            assertionFailure("Не удалось создать токен")
-            return nil
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        print(request)
-        return request
-        
-        
-    }
+    private let urlSession = URLSession.shared
+    private var task: URLSessionTask?
+    private var lastLoadedPage: Int?
     
     func fetchPhotosNextPage() {
+        guard task == nil else { return }
         
-        assert(Thread.isMainThread)
-        if task != nil { return }
         let nextPage = (lastLoadedPage ?? 0) + 1
-        lastLoadedPage = nextPage
         
-        guard let requestImages = makeImageRequest(page: nextPage) else {
-            assertionFailure("нет доступа к базе изображений")
+        guard let request = makePhotosRequest(page: nextPage, perPage: 10) else {
+            print("Failed to make photos request")
             return
         }
         
-        let task = urlSession.objectTask(for: requestImages) { [weak self] (result: Result<[PhotoResult], Error>) in
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
             guard let self = self else { return }
             
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let photoResult):
-                    self.preparePhoto(photoResult: photoResult)
-                    NotificationCenter.default.post(name: ImagesListService.didChangeNotification,
-                                                    object: self,
-                                                    userInfo: ["photos": self.photos])
-                case .failure(let error):
-                    print(error)
-                }
+            switch result {
+            case .success(let newPhotos):
+                addToPhotos(newPhotos: newPhotos)
+                NotificationCenter.default.post(
+                    name: ImagesListService.didChangeNotification,
+                    object: self
+                )
+            case .failure(let error): print(error)
             }
             self.task = nil
+            self.lastLoadedPage = nextPage
         }
         self.task = task
         task.resume()
     }
     
-    func preparePhoto(photoResult: [PhotoResult]) {
-        let newPhotos = photoResult.map { item in
-            Photo(id: item.id,
-                  size: CGSize(width: item.width, height: item.height),
-                  createdAt: dateFormatter.date(from: item.createdAt!),
-                  welcomeDescription: item.description,
-                  thumbImageURL: item.urls.thumb,
-                  largeImageURL: item.urls.full,
-                  isLiked: item.isLiked)
+    private func makePhotosRequest(page: Int, perPage: Int) -> URLRequest? {
+        guard let baseURL = URL(string: Constants.defaultBaseURL) else { return nil }
+        guard let token = OAuth2TokenStorage().token else { return nil }
+        
+        var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
+        components?.path = "/photos"
+        
+        let queryItems = [
+            URLQueryItem(name: "page", value: "\(page)"),
+            URLQueryItem(name: "per_page", value: "\(perPage)")
+        ]
+        components?.queryItems = queryItems
+        
+        guard let url = components?.url else { return nil }
+        
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpMethod = "GET"
+        
+        return request
+    }
+    
+    private func addToPhotos(newPhotos: [PhotoResult]) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        
+        for photo in newPhotos {
+            let newPhoto = Photo(
+                id: photo.id,
+                size: CGSize(width: photo.width, height: photo.height),
+                createdAt: dateFormatter.date(from: photo.createdAt),
+                welcomeDescription: photo.description,
+                thumbImageURL: photo.urls.thumb,
+                largeImageURL: photo.urls.full,
+                isLiked: photo.likedByUser
+            )
+            photos.append(newPhoto)
         }
-        photos.append(contentsOf: newPhotos)
+    }
+    
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void?, Error>) -> Void) {
+        guard let token = OAuth2TokenStorage().token else { return }
+        guard let url = URL(string: "\(Constants.defaultBaseURL)/photos/\(photoId)/like") else { return }
+        
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpMethod = isLike ? "POST" : "DELETE"
+        
+        urlSession.data(for: request) { [weak self] (result: Result<Data, Error>) in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success:
+                // Поиск индекса элемента
+                if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                    self.photos[index].isLiked = isLike
+                    completion(.success(nil))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }.resume()
+    }
+    
+    func cleanPhotos() {
+        photos = []
     }
 }
-
 
