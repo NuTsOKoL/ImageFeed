@@ -45,6 +45,7 @@ final class ProfileViewController: UIViewController {
         avatarImageView.tintColor = .ypGray
         avatarImageView.layer.cornerRadius = avatarImageView.frame.size.width / 2
         avatarImageView.clipsToBounds = true
+       avatarImageView.layer.cornerRadius = 35
         view.addSubview(avatarImageView)
         
         NSLayoutConstraint.activate([

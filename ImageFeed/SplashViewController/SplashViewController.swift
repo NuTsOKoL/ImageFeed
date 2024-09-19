@@ -8,7 +8,7 @@ final class SplashViewController: UIViewController {
     
     private var logoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "launch-screen-logo")
+        imageView.image = UIImage(named: "Vector")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -30,7 +30,7 @@ final class SplashViewController: UIViewController {
                 
                 switch result {
                 case .success(let result):
-                    self.fetchProfileImageURL(username: result.userName, token: token)
+                    self.fetchProfileImageURL(username: result.username, token: token)
                     self.switchToTabBarController()
                 case .failure(let error):
                     print(error)
@@ -81,7 +81,7 @@ final class SplashViewController: UIViewController {
     private func switchToTabBarController() {
         // Получаем экземпляр `window` приложения
         guard let window = UIApplication.shared.windows.first else {
-            assertionFailure("Invalid window configuration")
+            assertionFailure("Неверная конфигурация window")
             return
         }
         
@@ -102,14 +102,14 @@ extension SplashViewController: AuthViewControllerDelegate {
                 
                 switch result {
                 case .success(let result):
-                    self.fetchProfileImageURL(username: result.userName, token: token)
+                    self.fetchProfileImageURL(username: result.username, token: token)
                     self.switchToTabBarController()
                 case .failure(let error):
                     print(error)
                 }
             }
         } else {
-            print("Couldn't read auth token")
+            print("Не удалось прочитать токен аутентификации")
         }
     }
 }
