@@ -16,7 +16,7 @@ final class ImagesListService {
         let nextPage = (lastLoadedPage ?? 0) + 1
         
         guard let request = makePhotosRequest(page: nextPage, perPage: 10) else {
-            print("Failed to make photos request")
+            print("Не удалось отправить запрос на фотографии")
             return
         }
         
