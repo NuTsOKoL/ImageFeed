@@ -1,69 +1,65 @@
-import UIKit
+import Foundation
 
 final class ProfileImageService {
-    private (set) var avatarURL: String?
-    private let urlSession = URLSession.shared
-    private var task: URLSessionTask?
-    private var lastUserName: String?
-    
+    static let shared = ProfileImageService()
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     
-    static let shared = ProfileImageService()
-    private init() {}
+    private(set) var avatarURL: String?
     
-    func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
+    private let urlSession = URLSession.shared
+    private var task: URLSessionTask?
+    private var lastUsername: String?
+    
+    func fetchProfileImageURL(username: String, token: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
-        if lastUserName == username {return}
-        task?.cancel()
-        lastUserName = username
         
-        let request = makeRequest(username: username)
-        let task = urlSession.objectTask(for: request) {[weak self] (result: Result<UserResult, Error>) in
-            guard let self = self else {return}
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let profileImageURL):
-                    let avatarURL = profileImageURL.profileImage.small
-                    self.avatarURL = avatarURL
-                    completion(.success(avatarURL))
-                    NotificationCenter.default.post(
-                        name: ProfileImageService.didChangeNotification,
-                        object: self,
-                        userInfo: ["URL": profileImageURL])
-                    self.task = nil
-                case .failure(let error):
-                    completion(.failure(error))
-                    self.lastUserName = nil
-                }
-            }
+        guard lastUsername != username else {
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
         }
-        self.task = nil
+        
+        task?.cancel()
+        lastUsername = username
+        
+        guard let request = makeProfileDataRequest(username: username, token: token) else {
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<ProfileImageResult, Error>) in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let data):
+                let profileImageURL = data.profileImage.large
+                self.avatarURL = profileImageURL
+                completion(.success(profileImageURL))
+                NotificationCenter.default.post(
+                    name: ProfileImageService.didChangeNotification,
+                    object: self,
+                    userInfo: ["URL": profileImageURL]
+                )
+            case .failure(let error): completion(.failure(error))
+            }
+            self.task = nil
+            self.lastUsername = nil
+        }
+        self.task = task
         task.resume()
+    }
+    
+    private func makeProfileDataRequest(username: String, token: String) -> URLRequest? {
+        guard let url = URL(string: "\(Constants.defaultBaseURL)/users/\(username)") else { return nil }
+        
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpMethod = "GET"
+        
+        return request
+    }
+    
+    func cleanProfileImage() {
+        avatarURL = nil
     }
 }
 
-extension ProfileImageService {
-    private func makeRequest(username: String) -> URLRequest {
-        guard let defaultBaseURL = URL(string: Constants.defaultBaseURL) else {
-            preconditionFailure("Не удалось создать baseUrl")
-        }
-        
-        var urlComponents = URLComponents()
-        urlComponents.path = "/users/\(username)"
-        
-        guard let url = urlComponents.url(relativeTo: defaultBaseURL)
-        else {
-            assertionFailure("Не удается создать URL-адрес аватара")
-            return URLRequest(url: URL(string: "")!)
-        }
-        guard let token = OAuth2TokenStorage.shared.token else {
-            assertionFailure("Не удалось создать токен")
-            return URLRequest(url: URL(string: "")!)
-        }
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        print(request)
-        return request
-    }
-}
