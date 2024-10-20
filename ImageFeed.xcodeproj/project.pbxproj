@@ -241,9 +241,9 @@
 		04D3815D2CC52A5400714097 /* unit-tests */ = {
 			isa = PBXGroup;
 			children = (
-				04D0F3752CC5603B00B290C9 /* ImagesList */,
-				04D0F3702CC5603600B290C9 /* Profile */,
 				04D381562CC52A5400714097 /* WebView */,
+				04D0F3702CC5603600B290C9 /* Profile */,
+				04D0F3752CC5603B00B290C9 /* ImagesList */,
 			);
 			path = "unit-tests";
 			sourceTree = "<group>";
